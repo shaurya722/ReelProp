@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "5b11a32f-de08-4bb1-b388-eac28fe360ad",
+		"name": "reel-prop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43067038"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Shaurya Joshi+3\",\n  \"email\": \"shaurya+3@example.com\",\n  \"mobile\": \"8527419636\",\n  \"password\": \"SecurePass123!\",\n  \"confirm_password\": \"SecurePass123!\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}register/",
+							"host": [
+								"{{reel-prop}}register"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"shaurya+2@example.com\",\n  \"password\":\"NewSecure123!\", // +2\n  \"remember_me\": true\n//   \"password\": \"SecurePass123!\" +3,\n    // \"password\":\"ChangedPass123!\",\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}login/",
+							"host": [
+								"{{reel-prop}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify-otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"shaurya+3@example.com\",\n  \"otp\": \"974844\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}verify-otp/",
+							"host": [
+								"{{reel-prop}}verify-otp"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot-Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"shaurya+2@example.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}forgot-password/",
+							"host": [
+								"{{reel-prop}}forgot-password"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset-Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"new_password\": \"NewSecure123!\",\n    \"confirm_password\": \"NewSecure123!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}reset-password/?uid=Mw&token=cs96yo-82bb7d16858f1bb7579150571ccd0baa",
+							"host": [
+								"{{reel-prop}}reset-password"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "Mw"
+								},
+								{
+									"key": "token",
+									"value": "cs96yo-82bb7d16858f1bb7579150571ccd0baa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxMzU5MjIzLCJpYXQiOjE3NTEzNTc0MjMsImp0aSI6IjkwNDRiMGExMmU0ZTQ5MTdhMTg5YWRjNDc0ZmZjYTdkIiwidXNlcl9pZCI6NH0.q80ek-HaQCv4fKcaQmUakUVnlwXhi7FelkkpigVEAjA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"old_password\": \"SecurePass123!\",\n  \"new_password\": \"ChangedPass123!\",\n  \"confirm_password\": \"ChangedPass123!\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}change-password/",
+							"host": [
+								"{{reel-prop}}change-password"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "reel-prop",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
