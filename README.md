@@ -1,7 +1,7 @@
-Auth flow 
-1 - Register
-2 - Login
-3 - Otp
-4 - ForgotPassword
-5 - ResetPassword
-6 - ChangePassword
+Auth flow <Br/>
+1 - Register <Br/>
+2 - Login <Br/>
+3 - Otp <Br/>
+4 - ForgotPassword <Br/>
+5 - ResetPassword <Br/>
+6 - ChangePassword <Br/>
