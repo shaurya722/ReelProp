@@ -3,6 +3,7 @@ from .models import User,UserOTP
 import re   
 from datetime import timedelta
 from .utils import create_and_send_otp
+from django.utils import timezone
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True,min_length=8)
@@ -65,7 +66,7 @@ class UserLoginSerializer(serializers.Serializer):
 
         # Extend refresh token lifetime if "Remember Me"
         if remember_me:
-            refresh.set_exp(lifetime=timedelta(days=30))  # 30-day refresh
+            refresh.set_exp(lifetime=timedelta(days=30)) 
         
         if not user.is_verified:
             raise serializers.ValidationError("User is not verified")
@@ -81,8 +82,6 @@ class UserLoginSerializer(serializers.Serializer):
             }
         }
 
-    
-
 class OTPVerificationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     otp = serializers.CharField()
@@ -93,20 +92,40 @@ class OTPVerificationSerializer(serializers.Serializer):
             otp_obj = UserOTP.objects.get(user=user, otp=data['otp'])
 
             if otp_obj.is_expired():
-                raise serializers.ValidationError("OTP has expired")
+                raise serializers.ValidationError({
+                    "detail": "OTP has expired",
+                    "resend_url": "/api/auth/resend-otp/",
+                    "message": "Your OTP has expired. Please request a new one."
+                })
 
-            return {'user': user}
+            return {'user': user, 'otp_obj': otp_obj}
         except User.DoesNotExist:
-            raise serializers.ValidationError("User not found")
+            raise serializers.ValidationError({
+                "detail": "User not found",
+                "message": "No user exists with this email address"
+            })
         except UserOTP.DoesNotExist:
-            raise serializers.ValidationError("Invalid OTP")
+            raise serializers.ValidationError({
+                "detail": "Invalid OTP",
+                "message": "The OTP you entered is incorrect",
+                "resend_url": "/api/auth/resend-otp/"
+            })
 
     def save(self):
         user = self.validated_data['user']
+        otp_obj = self.validated_data['otp_obj']
+        
         user.is_verified = True
         user.save()
-        UserOTP.objects.filter(user=user).delete()
-        return user
+        otp_obj.delete()  # Only delete the specific OTP used
+        
+        return {
+            "message": "OTP verified successfully",
+            "user_id": user.id,
+            "email": user.email,
+            "is_verified": True,
+            "timestamp": timezone.now()
+        }
 
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -163,3 +182,15 @@ class ChangePasswordSerializer(serializers.Serializer):
         user = self.context['request'].user
         user.set_password(self.validated_data['new_password'])
         user.save()
+
+class ResendOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = User.objects.get(email=value)
+            if user.is_verified:
+                raise serializers.ValidationError("User is already verified")
+            return value
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User not found")

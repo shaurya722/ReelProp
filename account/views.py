@@ -1,12 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, UserLoginSerializer, OTPVerificationSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, UserLoginSerializer, OTPVerificationSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, ChangePasswordSerializer, ResendOTPSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import User
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from .tokens import password_reset_token
+from .utils import create_and_send_otp
+from django.db.models import Q
+from datetime import timedelta
+from django.utils import timezone
+from .models import UserOTP
 
 
 class RegisterView(APIView):
@@ -75,6 +80,27 @@ class ResetPasswordView(APIView):
             user.save()
             return Response({"message": "Password reset successful"}, status=200)
 
+        return Response(serializer.errors, status=400)
+
+
+class ResendOTPView(APIView):
+    def post(self, request):
+        serializer = ResendOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            user = User.objects.get(email=email)
+            
+            # Delete any existing OTPs for this user
+            UserOTP.objects.filter(user=user).delete()
+            
+            # Create and send new OTP
+            create_and_send_otp(user)
+            
+            return Response({
+                "message": "New OTP has been sent",
+                "email": email,
+                "otp_valid_until": timezone.now() + timedelta(minutes=5)
+            }, status=200)
         return Response(serializer.errors, status=400)
 
 

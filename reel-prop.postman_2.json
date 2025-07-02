@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Shaurya Joshi+3\",\n  \"email\": \"shaurya+3@example.com\",\n  \"mobile\": \"8527419636\",\n  \"password\": \"SecurePass123!\",\n  \"confirm_password\": \"SecurePass123!\"\n}\n",
+							"raw": "{\n  \"name\": \"Shaurya Joshi+6\",\n  \"email\": \"shaurya+6@example.com\",\n  \"mobile\": \"8523419336\",\n  \"password\": \"SecurePass123!\",\n  \"confirm_password\": \"SecurePass123!\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"shaurya+2@example.com\",\n  \"password\":\"NewSecure123!\", // +2\n  \"remember_me\": true\n//   \"password\": \"SecurePass123!\" +3,\n    // \"password\":\"ChangedPass123!\",\n}\n",
+							"raw": "{\n  \"email\": \"shaurya+6@example.com\",\n//   \"password\":\"NewSecure123!\", // +2\n  \"remember_me\": true,\n  \"password\": \"SecurePass123!\" // +3,\n    // \"password\":\"ChangedPass123!\",\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"shaurya+3@example.com\",\n  \"otp\": \"974844\"\n}\n",
+							"raw": "{\n  \"email\": \"shaurya+6@example.com\",\n  \"otp\": \"916434\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -173,6 +173,32 @@
 							"raw": "{{reel-prop}}change-password/",
 							"host": [
 								"{{reel-prop}}change-password"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend-Otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"shaurya+6@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reel-prop}}resend-otp/",
+							"host": [
+								"{{reel-prop}}resend-otp"
 							],
 							"path": [
 								""
